@@ -2,7 +2,15 @@
 
 Browser-based test runner for **Iterable Assist (Nova Agent)**. Sends prompts to the Assist panel, waits for streamed responses to complete, and captures screenshots with a markdown report.
 
-## Quick Start
+## Quick Start (with Cursor)
+
+If you're using [Cursor](https://cursor.sh), just open this repo and ask:
+
+> "Run the Iterable Assist tests"
+
+The built-in Cursor skill will walk you through everything — collecting your session cookies, building prompts with real campaign data, running the tests, and reviewing results. No manual setup needed.
+
+## Quick Start (manual)
 
 ```bash
 # 1. Install dependencies
