@@ -28,6 +28,25 @@ npm run validate
 npm test
 ```
 
+## Inputs
+
+Drop your test data into the `inputs/` folder (gitignored). The Cursor skill uses these to auto-generate `prompts.json` with real campaign data.
+
+| File | Format | How to get it |
+|------|--------|---------------|
+| **Bug bash test sheet** | PDF or CSV | The test specification doc with expected behaviors per scenario |
+| **Campaign CSV** | CSV | Messaging Insights → Campaigns tab → Export metrics |
+| **MI overview screenshot** | PNG/JPG | Screenshot of Messaging Insights overview page |
+
+```
+inputs/
+├── bug-bash-scenarios.pdf   # Test spec with expected behaviors
+├── campaigns.csv            # Real campaign names, IDs, metrics
+└── mi-overview.png          # Channel breakdown and health dashboard
+```
+
+With these files in place, the Cursor skill can read the bug bash expectations, find campaigns with real data, and generate `prompts.json` automatically.
+
 ## Configuration
 
 ### `.env` — Session & browser settings

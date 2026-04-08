@@ -27,13 +27,13 @@ npx playwright install chromium
 
 Run `npm run validate`. If it reports `.env` missing or cookies not set:
 
-1. Tell the user: "I need your Iterable session cookies. Please do the following:"
-   - Open `app.iterable.com` in Chrome
-   - Open DevTools (Cmd+Option+I) → Application tab → Cookies → `app.iterable.com`
-   - Copy the value of `ITERABLE_SESSION`
-   - Copy the value of `XSRF-TOKEN`
-   - Paste both values here
-2. Once the user provides cookies, write the `.env` file:
+1. Ask the user: **"I need your Iterable session cookies to run the tests. Please:**
+   - **Open `app.iterable.com` in Chrome**
+   - **DevTools (Cmd+Option+I) → Application → Cookies → `app.iterable.com`**
+   - **Copy the `ITERABLE_SESSION` value**
+   - **Copy the `XSRF-TOKEN` value**
+   - **Paste both here"**
+2. Once the user provides cookies, write `.env`:
 
 ```
 ITERABLE_SESSION=<value from user>
@@ -42,42 +42,69 @@ BASE_URL=https://app.iterable.com
 BROWSER_MODE=headed
 ```
 
-### Step 3: Check `prompts.json` — collect campaign data from user if missing
+### Step 3: Check `prompts.json` — build from inputs
 
-If `prompts.json` doesn't exist, you need real campaign names. Ask the user:
+If `prompts.json` doesn't exist, you need real campaign data. Check the `inputs/` folder for any of these files (in priority order):
 
-"I need real campaign names from your Iterable project to build the test prompts. Can you either:
-  - **Option A**: Share a CSV export from Messaging Insights → Campaigns tab, or
-  - **Option B**: Tell me 3-5 campaign names that have recent activity (sent in the last 7-30 days)"
+#### Option A: All 3 inputs available (best)
 
-Once you have campaign data, build `prompts.json` using these rules:
+If `inputs/` contains a **bug bash doc** (PDF/CSV), a **campaign CSV**, and an **MI screenshot**:
 
-| Test # | Category | What campaign data is needed |
-|--------|----------|------------------------------|
-| 01 | Summary | A campaign with recent sends + clicks + opens |
-| 02 | Metrics | No specific campaign needed (aggregates all Email) |
-| 03 | Visualization | A **uniquely named** campaign with recent activity (not a name shared by multiple campaigns) |
-| 04 | Visualization | 3 campaigns with recent activity in the same week |
-| 05 | Summary | No specific campaign needed (weekly aggregate) |
-| 06 | Ranking | Use "last month" if current month just started. Need Push campaigns with data, or change to Email |
-| 07 | Rates | Any campaign name + a time period BEFORE the campaign was sent |
-| 08 | Rates | No specific campaign needed (aggregates SMS) |
-| 09 | Ambiguity | A campaign name that appears MORE THAN ONCE in the data (e.g., "welcome email") |
-| 10 | Pre-Nov | Any campaign name + "October 2025" (before Nov 11 2025 data boundary) |
-| 11 | Not Found | A campaign name that does NOT exist (e.g., "Cyber Monday Deals") |
-| 12 | Unsupported | Any real campaign name (asks about "revenue" which is unsupported) |
-| 13 | Filtered | Any real campaign name (asks about "excluding bot traffic") |
-| 14 | Summary-Nov | No specific campaign needed (asks about November 2025) |
-| 15 | Scale | No specific campaign needed (asks for sends + clicks chart — different scales) |
-| 16 | Comparison | 2 campaigns with recent activity + include "over the past week" in the prompt |
+1. Read the **bug bash doc** to understand each test category's expected behavior
+2. Read the **campaign CSV** to find real campaign names, channels, IDs, and metrics
+3. Read the **MI screenshot** to see which channels have activity and overall metric ranges
+4. Generate `prompts.json` using the campaign mapping rules below
 
-Use `prompts.example.json` as the template structure. Write the completed file to `prompts.json`.
+#### Option B: Only campaign CSV available
+
+If `inputs/` has a campaign CSV but no bug bash doc:
+
+1. Read the CSV for campaign names and metrics
+2. Use the Bug Bash Scenario Reference table below for expected behaviors
+3. Generate `prompts.json`
+
+#### Option C: No inputs — ask the user
+
+If `inputs/` is empty, ask the user to provide files:
+
+**"To generate accurate test prompts, I need some data from your Iterable project. Please drop any of these into the `inputs/` folder:**
+
+1. **Bug bash test sheet** (PDF or CSV) — the test specification with expected behaviors
+2. **Campaign CSV** — export from Messaging Insights → Campaigns tab → Export metrics
+3. **MI overview screenshot** — screenshot of the Messaging Insights overview page
+
+**The more you provide, the better the prompts will be. At minimum I need either the campaign CSV or a list of 3-5 active campaign names."**
+
+#### Campaign-to-prompt mapping rules
+
+When building `prompts.json` from campaign data:
+
+| Test # | Category | What to pick from the data |
+|--------|----------|----------------------------|
+| 01 | Summary | A campaign with high sends + clicks + opens (best data) |
+| 02 | Metrics | No specific campaign (aggregates all Email clicks) |
+| 03 | Visualization | A **uniquely named** campaign (no duplicates) with recent activity |
+| 04 | Visualization | 3 campaigns with activity in the same week. Include "over the past week" |
+| 05 | Summary | No specific campaign. Use "Give me a summary of my campaign performance last week" |
+| 06 | Ranking | If today is early in the month, use "last month". Check if Push campaigns exist; if not, use Email |
+| 07 | Rates | Pick any campaign + a time period BEFORE it was sent (e.g., campaign sent Mar 31 → ask about January) |
+| 08 | Rates | No specific campaign. "What was my average click rate across all SMS campaigns this month?" |
+| 09 | Ambiguity | A name that appears MORE THAN ONCE (e.g., "welcome email"). If none exist, use a partial/vague name |
+| 10 | Pre-Nov | Any campaign name + "in October 2025" (before Nov 11, 2025 data boundary) |
+| 11 | Not Found | A campaign name that does NOT exist (invent one like "Cyber Monday Deals") |
+| 12 | Unsupported | Any real campaign name. Prompt asks about "revenue" (unsupported metric) |
+| 13 | Filtered | Any real campaign name. Prompt asks about "excluding bot traffic" |
+| 14 | Summary-Nov | No specific campaign. "Give me a summary of my campaign performance for November 2025" |
+| 15 | Scale | No specific campaign. "Chart total sends and total clicks for all Email campaigns over the past month" (different scales) |
+| 16 | Comparison | 2 campaigns with recent activity. Include "over the past week" in the prompt |
+
+Use `prompts.example.json` as the template structure. Write the completed array to `prompts.json`.
 
 ### Step 4: Validate and run
 
 ```bash
-npm run validate    # Should pass now
-npm test            # Run all tests (headed browser)
+npm run validate
+npm test
 ```
 
 To run specific tests: `npm test -- 01 03 07`
@@ -87,12 +114,12 @@ To run headless: `npm run test:headless`
 
 After the run completes:
 1. Open the timestamped screenshot folder: `open screenshots/<timestamp>`
-2. Read the `REPORT.md` inside that folder for a summary table
-3. Review screenshots for any that show "Responding..." (need re-run) or unexpected responses
+2. Read `REPORT.md` inside that folder for a summary table
+3. Review screenshots — check for "Responding..." (need re-run) or unexpected responses
 
 ### Step 6: Re-run failures
 
-If any tests need re-running: `npm test -- 03 09` (pass the specific IDs)
+If any tests need re-running: `npm test -- 03 09` (pass specific IDs)
 
 ## Bug Bash Scenario Reference
 
