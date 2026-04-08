@@ -111,6 +111,16 @@ When building `prompts.json` from campaign data:
 
 Use `prompts.example.json` as the template structure. Write the completed array to `prompts.json`.
 
+#### Campaign IDs and `disambiguation`
+
+When building or editing `prompts.json`, add an optional **`disambiguation`** field on any scenario where Assist might confuse campaigns (duplicate names, different envs, or multi-channel).
+
+- The runner **concatenates** `prompt` + blank line + `disambiguation` before submit; logs show the short prompt plus an `ID hint:` line.
+- Use Messaging Insights campaign **IDs** (and channel, e.g. Email) in plain language, e.g. `Use Email campaign ID 17601796 if multiple campaigns match this name.`
+- For tests that name **several** campaigns in one prompt (e.g. 04, 16), list each name with its ID in a single `disambiguation` string.
+
+Omit `disambiguation` when the prompt has no named campaign or names are unique enough.
+
 ### Step 4: Validate and run
 
 ```bash
@@ -162,3 +172,4 @@ If any tests need re-running: `npm test -- 03 09` (pass specific IDs)
 | Screenshots show "Responding..." | Response took >90s. Re-run: `npm test -- <id>` |
 | "prompts.json not found" | Need campaign data from user. Follow Step 3 above. |
 | Campaign "not found" by Assist | Campaign has no data in the time window. Ask user for active campaigns. |
+| Wrong campaign / duplicate name confusion | Add or fix **`disambiguation`** with MI campaign IDs (and channel). Re-run affected test IDs. |

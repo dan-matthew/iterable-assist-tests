@@ -6,6 +6,8 @@ export interface Prompt {
   id: string;
   category: string;
   prompt: string;
+  /** Appended when submitting to Assist (e.g. Iterable campaign IDs) so names disambiguate. */
+  disambiguation?: string;
   expected?: string;
 }
 

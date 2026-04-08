@@ -78,12 +78,21 @@ JSON array of prompts to run. Each entry:
 {
   "id": "01",
   "category": "Summary",
-  "prompt": "How did my Presidents Day Sale campaign perform?",
+  "prompt": "How did my Spring Sale campaign perform?",
+  "disambiguation": "Use Email campaign ID 17601796 if multiple campaigns match this name.",
   "expected": "Should return summary with Total Sent, CTR, Open Rate, Unsub Rate."
 }
 ```
 
 See `prompts.example.json` for all 16 test scenarios from the Analytics Agent Bug Bash.
+
+### Campaign disambiguation (`disambiguation`)
+
+Optional string per scenario. When set, the runner **appends** it to `prompt` (after a blank line) before submitting to Assist. The console shows the short `prompt` plus an `ID hint:` line; `REPORT.md` stores the **full** text that was sent.
+
+Use this when the same campaign name appears more than once (or across channels), or when you move prompts between environments and names collide. Pull numeric IDs from **Messaging Insights → Campaigns** (or your exported metrics).
+
+For multi-campaign prompts (e.g. test 04), put all IDs in one `disambiguation` line so each named campaign maps to an ID.
 
 ## Usage
 
@@ -126,7 +135,7 @@ The `REPORT.md` includes:
 3. For each prompt:
    - Navigates to a fresh page (new conversation thread)
    - Opens the Assist panel
-   - Types and submits the prompt
+   - Types and submits the prompt (and optional `disambiguation` appended)
    - Waits for "Responding..." to appear (streaming started)
    - Waits for "Responding..." to disappear (response complete)
    - Adds a 3s buffer for charts/animations to render

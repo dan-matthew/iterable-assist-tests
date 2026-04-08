@@ -69,14 +69,21 @@ async function main() {
 
   const results: TestResult[] = [];
 
-  for (const { id, category, prompt, expected } of config.prompts) {
+  for (const { id, category, prompt, disambiguation, expected } of config.prompts) {
+    const submittedPrompt = disambiguation?.trim()
+      ? `${prompt.trim()}\n\n${disambiguation.trim()}`
+      : prompt;
+
     console.log(`\n[${id}] ${category}: ${prompt}`);
+    if (disambiguation?.trim()) {
+      console.log(`  + ID hint: ${disambiguation.trim()}`);
+    }
 
     await page.goto(baseUrl, { waitUntil: 'networkidle', timeout: 30000 });
     await page.waitForTimeout(3000);
     await ensureAssistOpen(page);
 
-    await submitPrompt(page, prompt);
+    await submitPrompt(page, submittedPrompt);
     console.log('  Submitted, waiting for response...');
 
     const { waitSeconds, timedOut } = await waitForResponse(page);
@@ -87,7 +94,7 @@ async function main() {
     await page.screenshot({ path: screenshotPath, fullPage: false });
     console.log(`  Screenshot: ${filename}`);
 
-    results.push({ id, category, prompt, expected, waitSeconds, timedOut, screenshotFile: filename });
+    results.push({ id, category, prompt: submittedPrompt, expected, waitSeconds, timedOut, screenshotFile: filename });
   }
 
   const reportPath = writeReport(config, results);
