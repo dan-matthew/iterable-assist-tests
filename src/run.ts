@@ -9,6 +9,7 @@ async function main() {
   const config = loadConfig(process.argv);
 
   console.log(`\n  Iterable Assist Test Runner`);
+  console.log(`  Env: ${config.env} (${config.baseUrl})`);
   console.log(`  Run: ${config.runTimestamp}`);
   console.log(`  Mode: ${config.headed ? 'headed' : 'headless'}`);
   console.log(`  Tests: ${config.prompts.length}${config.filterIds.length ? ` (filtered: ${config.filterIds.join(', ')})` : ''}`);
@@ -26,7 +27,7 @@ async function main() {
     {
       name: 'ITERABLE_SESSION',
       value: config.sessionCookie,
-      domain: 'app.iterable.com',
+      domain: config.cookieDomain,
       path: '/',
       httpOnly: false,
       secure: true,
@@ -35,7 +36,7 @@ async function main() {
     {
       name: 'XSRF-TOKEN',
       value: config.xsrfToken,
-      domain: 'app.iterable.com',
+      domain: config.cookieDomain,
       path: '/',
       httpOnly: false,
       secure: true,

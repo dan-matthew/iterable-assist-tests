@@ -19,6 +19,7 @@ export function generateReport(config: Config, results: TestResult[]): string {
   lines.push('');
   lines.push(`**Date:** ${new Date().toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}`);
   lines.push(`**Run ID:** ${config.runTimestamp}`);
+  lines.push(`**Environment:** ${config.env}`);
   lines.push(`**URL:** ${config.baseUrl}`);
   lines.push(`**Tests run:** ${results.length} / ${config.prompts.length}`);
   lines.push(`**Mode:** ${config.headed ? 'headed' : 'headless'}`);

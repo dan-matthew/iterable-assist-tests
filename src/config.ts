@@ -9,8 +9,15 @@ export interface Prompt {
   expected?: string;
 }
 
+const ENV_DEFAULTS: Record<string, { baseUrl: string; cookieDomain: string }> = {
+  staging: { baseUrl: 'https://app.stg-itbl.co', cookieDomain: 'app.stg-itbl.co' },
+  production: { baseUrl: 'https://app.iterable.com', cookieDomain: 'app.iterable.com' },
+};
+
 export interface Config {
+  env: string;
   baseUrl: string;
+  cookieDomain: string;
   sessionCookie: string;
   xsrfToken: string;
   headed: boolean;
@@ -55,8 +62,15 @@ export function loadConfig(argv: string[]): Config {
 
   const screenshotDir = path.resolve('screenshots', runTimestamp);
 
+  const env = process.env.ENV || 'staging';
+  const defaults = ENV_DEFAULTS[env] || ENV_DEFAULTS.staging;
+  const baseUrl = process.env.BASE_URL || defaults.baseUrl;
+  const cookieDomain = new URL(baseUrl).hostname;
+
   return {
-    baseUrl: process.env.BASE_URL || 'https://app.iterable.com',
+    env,
+    baseUrl,
+    cookieDomain,
     sessionCookie,
     xsrfToken,
     headed,
