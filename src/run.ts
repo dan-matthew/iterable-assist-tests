@@ -9,7 +9,7 @@ async function main() {
   const config = loadConfig(process.argv);
 
   console.log(`\n  Iterable Assist Test Runner`);
-  console.log(`  Env: ${config.env} (${config.baseUrl})`);
+  console.log(`  URL: ${config.baseUrl}`);
   console.log(`  Run: ${config.runTimestamp}`);
   console.log(`  Mode: ${config.headed ? 'headed' : 'headless'}`);
   console.log(`  Tests: ${config.prompts.length}${config.filterIds.length ? ` (filtered: ${config.filterIds.join(', ')})` : ''}`);

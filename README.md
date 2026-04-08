@@ -49,26 +49,26 @@ With these files in place, the Cursor skill can read the bug bash expectations, 
 
 ## Configuration
 
-### `.env` — Environment, session & browser settings
+### `.env` — URL, session & browser settings
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `ENV` | No | `staging` (default) or `production` |
+| `BASE_URL` | No | Default: `https://app.iterable.com`. Cookie domain is auto-derived. |
 | `ITERABLE_SESSION` | Yes | Session cookie from the target environment |
 | `XSRF_TOKEN` | Yes | XSRF token cookie from the target environment |
-| `BASE_URL` | No | Auto-set from `ENV`. Override for custom URLs |
 | `BROWSER_MODE` | No | `headed` (default) or `headless` |
 | `VIEWPORT_WIDTH` | No | Default: `1440` |
 | `VIEWPORT_HEIGHT` | No | Default: `900` |
 
-**Environments:**
+**Common URLs:**
 
-| ENV | Base URL | Cookie domain |
-|-----|----------|---------------|
-| `staging` (default) | `https://web.stg-itbl.co` | `web.stg-itbl.co` |
-| `production` | `https://app.iterable.com` | `app.iterable.com` |
+| Environment | BASE_URL |
+|-------------|----------|
+| Production (default) | `https://app.iterable.com` |
+| Staging | `https://web.stg-itbl.co` |
+| Dev | Your dev environment URL |
 
-**Getting cookies:** Open the target environment URL → DevTools (Cmd+Option+I) → Application → Cookies → copy `ITERABLE_SESSION` and `XSRF-TOKEN` values. Cookies must come from the **same environment** you're testing against.
+**Getting cookies:** Open `BASE_URL` in Chrome → DevTools (Cmd+Option+I) → Application → Cookies → copy `ITERABLE_SESSION` and `XSRF-TOKEN` values. Cookies must come from the **same URL** you set in `BASE_URL`.
 
 ### `prompts.json` — Test scenarios
 

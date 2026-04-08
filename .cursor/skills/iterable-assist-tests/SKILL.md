@@ -23,34 +23,35 @@ npm install
 npx playwright install chromium
 ```
 
-### Step 2: Check `.env` — collect environment and cookies from user if missing
+### Step 2: Check `.env` — collect URL and cookies from user if missing
 
 Run `npm run validate`. If it reports `.env` missing or cookies not set:
 
-1. Ask the user: **"Which environment should I test against — staging (default) or production?"**
+1. Ask the user: **"What's the base URL of the Iterable environment you want to test?"**
 
-   | ENV | URL | When to use |
-   |-----|-----|-------------|
-   | `staging` | `https://web.stg-itbl.co` | Default — use for bug bash and regular testing |
-   | `production` | `https://app.iterable.com` | Only when testing prod-specific behavior |
+   | Environment | URL |
+   |-------------|-----|
+   | Production (default) | `https://app.iterable.com` |
+   | Staging | `https://web.stg-itbl.co` |
+   | Dev | Ask the user for their dev URL |
 
-2. Then ask: **"I need your session cookies from the target environment. Please:**
-   - **Open the environment URL in Chrome** (staging: `web.stg-itbl.co`, prod: `app.iterable.com`)
+2. Then ask: **"I need your session cookies from that environment. Please:**
+   - **Open the URL above in Chrome**
    - **DevTools (Cmd+Option+I) → Application → Cookies**
    - **Copy the `ITERABLE_SESSION` value**
    - **Copy the `XSRF-TOKEN` value**
    - **Paste both here"**
 
-3. Once the user provides cookies, write `.env`:
+3. Once the user provides the URL and cookies, write `.env`:
 
 ```
-ENV=staging
+BASE_URL=<url from user, default https://app.iterable.com>
 ITERABLE_SESSION=<value from user>
 XSRF_TOKEN=<value from user>
 BROWSER_MODE=headed
 ```
 
-The `BASE_URL` and cookie domain are auto-derived from `ENV`. No need to set them manually.
+The cookie domain is auto-derived from `BASE_URL`. No need to set it manually.
 
 ### Step 3: Check `prompts.json` — build from inputs
 
