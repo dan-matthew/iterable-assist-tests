@@ -1,0 +1,12 @@
+node_modules/
+dist/
+
+# Secrets — session cookies and tokens
+.env
+
+# Test prompts contain company-specific campaign data
+prompts.json
+
+# Screenshots are generated per run (timestamped subfolders)
+screenshots/
+!screenshots/.gitkeep

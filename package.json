@@ -1,0 +1,18 @@
+{
+  "name": "iterable-assist-tests",
+  "version": "1.0.0",
+  "description": "Browser-based test suite for Iterable Assist (Nova Agent) — runs prompts, waits for streamed responses, and captures screenshots.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "tsx src/run.ts",
+    "test:headed": "tsx src/run.ts --headed",
+    "test:headless": "tsx src/run.ts --headless",
+    "validate": "tsx src/validate.ts"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.50.0",
+    "dotenv": "^16.4.7",
+    "tsx": "^4.19.0"
+  }
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "01",
+    "category": "Summary",
+    "prompt": "How did my [Campaign Name] campaign perform?",
+    "expected": "Should return summary with Total Sent, CTR, Open Rate, Unsub Rate. Default to last 7 days."
+  },
+  {
+    "id": "02",
+    "category": "Metrics",
+    "prompt": "How many total Email clicks did I get last week?",
+    "expected": "Should aggregate counts across all Email campaigns. Should NOT provide aggregated CTR."
+  },
+  {
+    "id": "03",
+    "category": "Visualization",
+    "prompt": "Chart my [Campaign Name] open rate over the last 14 days",
+    "expected": "Generate time series chart with daily granularity. Provide 2-4 sentence summary."
+  },
+  {
+    "id": "04",
+    "category": "Visualization",
+    "prompt": "Compare click rates for [Campaign A], [Campaign B], and [Campaign C] over the past week",
+    "expected": "Generate chart with 3 campaign series. All must have started within the past week AND after 11/11/2025."
+  },
+  {
+    "id": "05",
+    "category": "Summary",
+    "prompt": "Give me a summary of my campaign performance last week",
+    "expected": "Show # of campaigns by channel, channel-level counts (NO aggregated rates), top 3 by CTR."
+  },
+  {
+    "id": "06",
+    "category": "Ranking",
+    "prompt": "Show me my top 5 Push campaigns from last month",
+    "expected": "Rank by Open Rate (NOT CTR). Do NOT include CTR for Push. Show top 3, offer next 2."
+  },
+  {
+    "id": "07",
+    "category": "Rates",
+    "prompt": "What was the CTR for [Campaign Name] in [month outside campaign period]?",
+    "expected": "Detect campaign sent outside requested timeframe. Offer to see performance for original period."
+  },
+  {
+    "id": "08",
+    "category": "Rates",
+    "prompt": "What was my average click rate across all SMS campaigns this month?",
+    "expected": "Should NOT provide aggregated rate. Explain aggregating rates across campaigns not supported."
+  },
+  {
+    "id": "09",
+    "category": "Ambiguity",
+    "prompt": "How did my [ambiguous campaign name] campaign perform?",
+    "expected": "If multiple matches, list all with disambiguation details (name, channel). Ask to clarify."
+  },
+  {
+    "id": "10",
+    "category": "Pre-Nov",
+    "prompt": "Show me the click rate for my [Campaign Name] campaign in October 2025",
+    "expected": "Detect campaign before 11/11/2025. Explain no data supported before Nov 11 2025."
+  },
+  {
+    "id": "11",
+    "category": "Not Found",
+    "prompt": "How is my [non-existent campaign] campaign doing?",
+    "expected": "Cannot find campaign. Show 3 most recent campaigns. Ask if user wants one of those."
+  },
+  {
+    "id": "12",
+    "category": "Unsupported",
+    "prompt": "What was my revenue from the [Campaign Name] campaign?",
+    "expected": "Clearly state revenue not supported. Offer supported metrics. Ask 'Would any of these help?'"
+  },
+  {
+    "id": "13",
+    "category": "Filtered",
+    "prompt": "Show me click rate excluding bot traffic for [Campaign Name]",
+    "expected": "Explain filtered metrics not available. Provide unfiltered CTR instead."
+  },
+  {
+    "id": "14",
+    "category": "Summary-Nov",
+    "prompt": "Give me a summary of my campaign performance for November 2025",
+    "expected": "Provide summary for Nov 11-30 only. Display warning about data starting Nov 11."
+  },
+  {
+    "id": "15",
+    "category": "Scale",
+    "prompt": "Chart total sends and total clicks for all Email campaigns over the past month",
+    "expected": "Handle different scales. Chart should scale appropriately (dual Y-axis or log scale)."
+  },
+  {
+    "id": "16",
+    "category": "Comparison",
+    "prompt": "Compare [Campaign A] and [Campaign B] over the past week",
+    "expected": "Generate side-by-side comparison with supported metrics."
+  }
+]
