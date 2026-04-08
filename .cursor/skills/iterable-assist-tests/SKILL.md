@@ -31,11 +31,11 @@ Run `npm run validate`. If it reports `.env` missing or cookies not set:
 
    | ENV | URL | When to use |
    |-----|-----|-------------|
-   | `staging` | `https://app.stg-itbl.co` | Default — use for bug bash and regular testing |
+   | `staging` | `https://web.stg-itbl.co` | Default — use for bug bash and regular testing |
    | `production` | `https://app.iterable.com` | Only when testing prod-specific behavior |
 
 2. Then ask: **"I need your session cookies from the target environment. Please:**
-   - **Open the environment URL in Chrome** (staging: `app.stg-itbl.co`, prod: `app.iterable.com`)
+   - **Open the environment URL in Chrome** (staging: `web.stg-itbl.co`, prod: `app.iterable.com`)
    - **DevTools (Cmd+Option+I) → Application → Cookies**
    - **Copy the `ITERABLE_SESSION` value**
    - **Copy the `XSRF-TOKEN` value**

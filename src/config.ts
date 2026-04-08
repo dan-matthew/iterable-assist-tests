@@ -10,7 +10,7 @@ export interface Prompt {
 }
 
 const ENV_DEFAULTS: Record<string, { baseUrl: string; cookieDomain: string }> = {
-  staging: { baseUrl: 'https://app.stg-itbl.co', cookieDomain: 'app.stg-itbl.co' },
+  staging: { baseUrl: 'https://web.stg-itbl.co', cookieDomain: 'web.stg-itbl.co' },
   production: { baseUrl: 'https://app.iterable.com', cookieDomain: 'app.iterable.com' },
 };
 

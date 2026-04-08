@@ -65,7 +65,7 @@ With these files in place, the Cursor skill can read the bug bash expectations, 
 
 | ENV | Base URL | Cookie domain |
 |-----|----------|---------------|
-| `staging` (default) | `https://app.stg-itbl.co` | `app.stg-itbl.co` |
+| `staging` (default) | `https://web.stg-itbl.co` | `web.stg-itbl.co` |
 | `production` | `https://app.iterable.com` | `app.iterable.com` |
 
 **Getting cookies:** Open the target environment URL → DevTools (Cmd+Option+I) → Application → Cookies → copy `ITERABLE_SESSION` and `XSRF-TOKEN` values. Cookies must come from the **same environment** you're testing against.
